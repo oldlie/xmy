@@ -14,7 +14,7 @@ Vue.config.productionTip = false
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-axios.defaults.baseURL = 'http://192.168.3.5:8888';
+axios.defaults.baseURL = 'http://localhost:8888';
 axios.defaults.withCredentials = true;
 axios.defaults.headers = {
   'X-Requested-With': 'XMLHttpRequest',

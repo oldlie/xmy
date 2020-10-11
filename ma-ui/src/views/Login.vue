@@ -20,8 +20,8 @@
             v-model="sms"
             center
             clearable
-            label="短信验证码"
-            placeholder="请输入短信验证码"
+            label="获取登录码"
+            placeholder="请输入登录码"
           >
             <template #button>
               <van-button
@@ -29,7 +29,7 @@
                 type="primary"
                 @click="preSend"
                 native-type="button"
-                >发送验证码</van-button
+                >获取登录码</van-button
               >
             </template>
           </van-field>
@@ -174,7 +174,7 @@ export default {
         .post(url, fd)
         .cb((data) => {
           if (data["status"] === 0) {
-            this.$notify({ type: "success", message: "已发送短信" });
+            this.$notify({ type: "success", message: `您的登录码是：${data.item}` });
             this.show = false;
           } else {
             this.$notify({

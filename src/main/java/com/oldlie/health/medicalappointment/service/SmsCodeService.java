@@ -12,6 +12,7 @@ import com.oldlie.health.medicalappointment.model.Csp;
 import com.oldlie.health.medicalappointment.model.db.SmsCode;
 import com.oldlie.health.medicalappointment.model.db.repository.SmsCodeRepository;
 import com.oldlie.health.medicalappointment.model.response.BaseResponse;
+import com.oldlie.health.medicalappointment.model.response.ItemResponse;
 import com.oldlie.health.medicalappointment.service.init.config.AkiConifg;
 import com.oldlie.health.medicalappointment.service.init.config.AksConfig;
 import com.oldlie.health.medicalappointment.service.init.config.SmsSignName;
@@ -48,8 +49,8 @@ public class SmsCodeService {
         return builder.toString();
     }
 
-    public BaseResponse save(String phone, String code) {
-        BaseResponse response = new BaseResponse();
+    public ItemResponse<String> save(String phone, String code) {
+        ItemResponse<String> response = new ItemResponse<>();
         Page<SmsCode> page = this.smsCodeRepository.findAll(
                 Tools.pageable(1, 1, "createDate", "desc")
         );
@@ -60,7 +61,8 @@ public class SmsCodeService {
             long codeTime = smsCode.getCreateDate().getTime();
             long now = System.currentTimeMillis();
             if (now - codeTime < fiveMinutes) {
-                return response.setFailed("请五分钟之后再试");
+                response.setFailed("请五分钟之后再试");
+                return response;
             }
         }
 
@@ -82,9 +84,11 @@ public class SmsCodeService {
         request.putQueryParameter("TemplateCode", templateCode);
         request.putQueryParameter("TemplateParam", code);
 
+        /*
+        TODO: 短信接口申请完成之后再改
         try {
-            CommonResponse commonResponse = client.getCommonResponse(request);
-            System.out.println(commonResponse.getData());
+            // CommonResponse commonResponse = client.getCommonResponse(request);
+            // System.out.println(commonResponse.getData());
         } catch (ServerException e) {
             e.printStackTrace();
             log.error(e.getMessage());
@@ -96,11 +100,12 @@ public class SmsCodeService {
             response.setFailed("短信未能发送");
             return response;
         }
-
+        */
         SmsCode target = new SmsCode();
         target.setPhone(phone);
         target.setCode(code);
         target = this.smsCodeRepository.save(target);
+        response.setItem(code);
         return response;
     }
 
