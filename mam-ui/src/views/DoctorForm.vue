@@ -133,7 +133,7 @@ export default {
             this.headPic = data.item[0];
             this.headPicList = [ {url: this.headPic} ];
           } else {
-            this.$toast.warning(decodeURI(data.message));
+            this.$notify({type: 'danger', message: decodeURI(data.message) });
           }
         })
         .fcb(() => {

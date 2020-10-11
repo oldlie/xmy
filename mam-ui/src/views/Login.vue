@@ -34,9 +34,9 @@
 export default {
   data() {
     return {
-      username: "mpadmin",
+      username: "",
       usernameRule: [{ required: true, message: "请填写用户名" }],
-      password: "qiong0214",
+      password: "",
       passwordRule: [{ required: true, message: "请填写密码" }],
       loading: false,
     };

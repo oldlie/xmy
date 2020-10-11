@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.oldlie.health</groupId>
-	<artifactId>medicalappointment</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>medicalappointment</name>
+	<artifactId>medical-appointment</artifactId>
+	<version>0.0.6</version>
+	<name>medical-appointment</name>
 	<description>Medical appointment</description>
 
 	<properties>

@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -45,6 +46,12 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
         String header = request.getHeader(Csp.AUTHORIZATION_);
 
         if (StringUtils.isEmpty(header) || !header.startsWith(Csp.APP_KEY)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        AntPathMatcher matcher = new AntPathMatcher();
+        if (matcher.match("**/login", request.getRequestURI())) {
             chain.doFilter(request, response);
             return;
         }

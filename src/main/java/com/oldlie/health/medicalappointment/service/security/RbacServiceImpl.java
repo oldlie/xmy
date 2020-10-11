@@ -29,8 +29,10 @@ public class RbacServiceImpl implements RbacService {
         if (permissions == null) {
             return false;
         }
+        String contextPath = request.getContextPath();
+        String matchUrl = request.getRequestURI().replace(contextPath, "");
         for (Permission permission : permissions) {
-            if (this.antPathMatcher.match(permission.getPerUrl(), request.getRequestURI())) {
+            if (this.antPathMatcher.match(permission.getPerUrl(), matchUrl)) {
                 if ("*".equals(permission.getPerMethod()) ||
                         request.getMethod()
                                 .toLowerCase()

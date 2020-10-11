@@ -1,6 +1,6 @@
 module.exports = {
     "publicPath":"/mam",
-    "outputDir":"D:/nginx-1.18.0/html/mam",
+    "outputDir":"./dist/mam",
     /*
     "devServer": {
         proxy: 'http://localhost:8088'

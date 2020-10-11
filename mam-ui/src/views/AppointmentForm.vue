@@ -211,7 +211,7 @@ export default {
       let day = date.getDay();
       this.bookDate = `${year}年${month}月${_date}日`;
       this.week = week2chinese[day];
-      this.ymd = year * 10000 + month * 100 + day;
+      this.ymd = year * 10000 + month * 100 + _date;
       this.showCalendar = false;
     },
     onStartTimeConfirm(time) {

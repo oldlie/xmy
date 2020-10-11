@@ -35,7 +35,7 @@ public class AppointmentController {
         if (id > 0) {
             appointment.setId(id);
         }
-        appointment.setYmd(Tools.getYmd());
+        appointment.setYmd(ymd);
         appointment.setDoctorId(doctorId);
         appointment.setDoctor(doctor);
         appointment.setBookDate(bookDate);

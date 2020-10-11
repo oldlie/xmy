@@ -73,7 +73,7 @@ public class ImageController {
             String path = this.fileService.dirPath(saveFileName, username, year, month);
             File saveFile = new File(this.configService.getValue(UploadDir.CONF_KEY) + File.separator + path);
             if (!saveFile.getParentFile().exists()) {
-                if (saveFile.getParentFile().mkdirs()) {
+                if (!saveFile.getParentFile().mkdirs()) {
                     response.setFailed("创建上传文件夹错误");
                     return response;
                 }
@@ -86,8 +86,10 @@ public class ImageController {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                String error = saveFile.getAbsolutePath() + ";\r\n" + e.getMessage();
+                System.out.println(saveFile.getAbsolutePath() + ";\r\n" + e.getMessage());
                 log.error(e.getMessage());
-                throw new AppRestException("保存上传文件到服务器时出现IO错误");
+                throw new AppRestException("保存上传文件到服务器时出现IO错误" + error);
             }
 
             uploadFileList.add(this.configService.getValue(UploadUrl.CONF_KEY)
