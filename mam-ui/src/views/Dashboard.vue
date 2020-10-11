@@ -22,7 +22,7 @@
         <p>预约设置</p>
       </van-grid-item>
 
-      <van-grid-item>
+      <van-grid-item @click="navigate('/system')">
         <van-icon name="setting-o" size="3rem" color="#bfbfbf" />
         <p>系统设置</p>
       </van-grid-item>

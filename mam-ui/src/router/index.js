@@ -8,6 +8,10 @@ import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Doctor from '../views/Doctor.vue'
 import DoctorForm from '../views/DoctorForm.vue'
+import ModifyPassword from '../views/ModifyPassword.vue'
+import SmsSetting from '../views/SmsSetting.vue'
+import System from '../views/System.vue'
+import SystemSetting from '../views/SystemSetting.vue'
 
 Vue.use(VueRouter)
 
@@ -46,6 +50,26 @@ const routes = [
     path: '/doctor-form/:id',
     name: 'DoctorForm',
     component: DoctorForm
+  },
+  {
+    path: '/modify-pass',
+    name: 'ModifyPassword',
+    component: ModifyPassword
+  },
+  {
+    path: '/sms-setting',
+    name: 'SmsSetting',
+    component: SmsSetting
+  },
+  {
+    path: '/system',
+    name: 'System',
+    component: System 
+  },
+  {
+    path: '/system-setting',
+    name: 'SystemSetting',
+    component: SystemSetting
   },
   {
     path: '/about',
