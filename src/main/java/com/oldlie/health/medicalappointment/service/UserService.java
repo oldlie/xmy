@@ -188,4 +188,19 @@ public class UserService implements UserDetailsService {
         response.setList(page.toList());
         return response;
     }
+
+    public BaseResponse modifyPassword(long uid, String newPassword, String oldPassword) {
+        BaseResponse response = new BaseResponse();
+        Optional<User> userOptional = this.userRepository.findById(uid);
+        if (!userOptional.isPresent()) {
+            return response.setFailed("非法使用");
+        }
+        User user = userOptional.get();
+        if (!this.bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+            return response.setFailed("密码错误");
+        }
+        user.setPassword(this.bCryptPasswordEncoder.encode(newPassword));
+        this.userRepository.save(user);
+        return response;
+    }
 }

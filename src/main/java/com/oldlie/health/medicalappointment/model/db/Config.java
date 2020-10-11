@@ -15,6 +15,7 @@ import javax.persistence.Table;
 public class Config extends Base {
 
     public final static String CONF_KEY = "confKey";
+    public final static String CONFIG_GROUP = "configGroup";
 
     private int configGroup;
     private String groupName;
