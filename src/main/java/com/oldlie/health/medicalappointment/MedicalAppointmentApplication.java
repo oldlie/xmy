@@ -56,8 +56,8 @@ public class MedicalAppointmentApplication implements ApplicationListener<Contex
 	public FilterRegistrationBean simpleCorsFilter() {
 		List<String> origins = new ArrayList<>();
 		origins.add("http://localhost");
-		origins.add("http://192.168.3.5");
 		origins.add("http://39.96.190.31");
+		origins.add("http://oldlie.com");
 		origins.add("http://localhost:80");
 		origins.add("http://127.0.0.1:80");
 		origins.add("http://localhost:8080");
