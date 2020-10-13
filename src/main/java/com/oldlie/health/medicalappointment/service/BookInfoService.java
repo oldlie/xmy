@@ -55,7 +55,7 @@ public class BookInfoService {
     public ItemResponse<BookInfo> book(long uid, long did, long aid, String nickname, String phone) {
         ItemResponse<BookInfo> response = new ItemResponse<>();
 
-        // 防治同一个账号重复预约
+        // 防止同一个账号重复预约
         Optional<BookInfo> optional = this.bookInfoRepository.findOne((root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.equal(root.get(BookInfo.UID), uid);
             Predicate predicate1 = criteriaBuilder.equal(root.get(BookInfo.AID), aid);
@@ -64,6 +64,27 @@ public class BookInfoService {
         });
         if (optional.isPresent()) {
             response.setFailed("您已经预约了这个时段");
+            return response;
+        }
+
+        Appointment appointment = this.appointmentRepository.findOne(
+                (root, query, criteriaBuilder) -> {
+                    Predicate predicate = criteriaBuilder.equal(root.get(Appointment.ID), aid);
+                    Predicate predicate1 = criteriaBuilder.equal(root.get(Appointment.DOCTOR_ID), did);
+                    return criteriaBuilder.and(predicate, predicate1);
+                }
+        ).orElse(null);
+        if (appointment == null) {
+            response.setFailed("预约信息不存在了");
+            return response;
+        }
+
+        long ymd = appointment.getYmd();
+        optional = this.bookInfoRepository.findOne(
+                (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get(BookInfo.YMD), ymd)
+        );
+        if (optional.isPresent()) {
+            response.setFailed("您今天已经有预约了，请前往预约记录查看");
             return response;
         }
 
@@ -79,17 +100,7 @@ public class BookInfoService {
             response.setFailed("医生信息不存在了");
             return response;
         }
-        Appointment appointment = this.appointmentRepository.findOne(
-                (root, query, criteriaBuilder) -> {
-                    Predicate predicate = criteriaBuilder.equal(root.get(Appointment.ID), aid);
-                    Predicate predicate1 = criteriaBuilder.equal(root.get(Appointment.DOCTOR_ID), did);
-                    return criteriaBuilder.and(predicate, predicate1);
-                }
-        ).orElse(null);
-        if (appointment == null) {
-            response.setFailed("预约信息不存在了");
-            return response;
-        }
+
 
         if (appointment.getBookedCount() >= appointment.getCandidateCount()) {
             response.setFailed("这个时段已经预约满了，请选择其他时段");
