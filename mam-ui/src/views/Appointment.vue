@@ -9,13 +9,17 @@
     <div v-for="item in appointmentList" v-bind:key="item.id">
       <van-swipe-cell>
         <van-cell
-          :title="`${item.bookDate} 周${item.bookWeek}`"
           :label="`医师: ${item.doctor}`"
           :value="`${item.timeRange}`"
           is-link
           :to="`/appointment-form/${item.id}`"
           style="text-align: left"
-        />
+        >
+          <template #title>
+            <van-icon v-if="item.published === 0" name="warn-o" color="#fa8c16" />
+            {{item.bookDate}} 周{{item.bookWeek}}
+          </template>
+        </van-cell>
         <template #right>
           <van-button
             square

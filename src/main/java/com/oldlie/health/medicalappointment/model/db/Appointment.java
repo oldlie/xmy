@@ -22,6 +22,7 @@ public class Appointment extends Base {
 
     public final static String DOCTOR_ID = "doctorId";
     public final static String YMD = "ymd";
+    public final static String PUBLISHED = "published";
 
     private long ymd;
     private String bookDate;

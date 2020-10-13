@@ -5,7 +5,7 @@
       left-text="返回"
       @click-left="onClickLeft"
     />
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" v-if="vm === 0">
       <van-field
         readonly
         clickable
@@ -87,7 +87,19 @@
         >
       </div>
     </van-form>
-
+    <div v-if="vm === 1">
+      <p><van-icon name="warning-o" size="3rem" color="#fa8c16" /></p>
+      <h2>请确认以下信息：</h2>
+      <p>医生：{{doctor}}</p>
+      <p>日期：{{bookDate}} 周{{week}}</p>
+      <p>时间：{{startTime}} - {{endTime}}</p>
+      <p>最大预约量：{{candidate}}</p>
+      <p><span style="font-size:.8rem">发布之后，如果有客户进行了预约则本条信息将无法修改或者删除。</span></p>
+      <p>
+        <van-button plain @click="reFill">重新填写</van-button>
+        <van-button type="primary" @click="publish" :loading="loading">发布信息</van-button>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -96,6 +108,7 @@ const week2chinese = ["日", "一", "二", "三", "四", "五", "六"];
 export default {
   data() {
     return {
+      vm: 0,
       loading: false,
       formTitle: "添加信息",
       id: 0,
@@ -142,7 +155,7 @@ export default {
           this.endTime = tr[1];
           this.doctor = item['doctorId'] + '. ' + item['doctor'];
           this.candidate = item['candidateCount'];
-          this.ymd = item['ymc'];
+          this.ymd = item['ymd'];
         } else {
           this.$notify({type: 'danger', message: decodeURI(data['message'])});
         }
@@ -196,7 +209,9 @@ export default {
         .post(url, fd)
         .cb((data) => {
           if (data.status === 0) {
+            this.id = data.item;
             this.$notify({ type: "success", message: "已保存" });
+            this.vm = 1;
           } else {
             this.$notify({ type: "danger", message: decodeURI(data.message) });
           }
@@ -226,6 +241,25 @@ export default {
       this.doctor = value;
       this.showPicker = false;
     },
+    reFill () {
+      this.vm = 0;
+    },
+    publish () {
+      const url = `/api/system/appointment/publish`;
+      const fd = new FormData();
+      fd.append("id", this.id);
+      this.loading = true;
+      this.$h.post(url, fd)
+      .cb(data => {
+        if (data.status === 0) {
+          this.$notify({type: 'success', message: '已保存'});
+        } else {
+          this.$notify({type: 'danger', message: decodeURI(data.message)});
+        }
+      })
+      .fcb(() => this.loading = false)
+      .req();
+    }
   },
 };
 </script>

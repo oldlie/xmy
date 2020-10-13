@@ -48,6 +48,11 @@ public class AppointmentController {
         return appointmentService.store(appointment);
     }
 
+    @PostMapping("/appointment/publish")
+    public BaseResponse publish(@RequestParam("id") long id) {
+        return this.appointmentService.publish(id);
+    }
+
     @DeleteMapping("/appointment")
     public BaseResponse delete(@RequestParam("id") long id) {
         return this.appointmentService.delete(id);

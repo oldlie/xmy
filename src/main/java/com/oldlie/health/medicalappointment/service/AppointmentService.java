@@ -1,5 +1,6 @@
 package com.oldlie.health.medicalappointment.service;
 
+import com.oldlie.health.medicalappointment.model.Csp;
 import com.oldlie.health.medicalappointment.model.db.Appointment;
 import com.oldlie.health.medicalappointment.model.db.repository.AppointmentRepository;
 import com.oldlie.health.medicalappointment.model.response.BaseResponse;
@@ -53,6 +54,18 @@ public class AppointmentService {
         return response;
     }
 
+    public BaseResponse publish(long id) {
+        BaseResponse response = new BaseResponse();
+        Optional<Appointment> optional = this.appointmentRepository.findById(id);
+        if (!optional.isPresent()) {
+            return response.setFailed("预约记录已经不存在了");
+        }
+        Appointment appointment = optional.get();
+        appointment.setPublished(Csp.TRUE_INT);
+        this.appointmentRepository.save(appointment);
+        return response;
+    }
+
     public ItemResponse<Appointment> one(long id) {
         return new ServiceUtil<Appointment, AppointmentRepository>(this.appointmentRepository).one(id);
     }
@@ -81,7 +94,8 @@ public class AppointmentService {
                 (root, query, criteriaBuilder) ->  {
                     Predicate predicate = criteriaBuilder.equal(root.get(Appointment.DOCTOR_ID), doctorId);
                     Predicate predicate1 = criteriaBuilder.ge(root.get(Appointment.YMD), Tools.getYmd());
-                    return criteriaBuilder.and(predicate, predicate1);
+                    Predicate predicate2 = criteriaBuilder.equal(root.get(Appointment.PUBLISHED), Csp.TRUE_INT);
+                    return criteriaBuilder.and(predicate, predicate1, predicate2);
                 },
                 Tools.pageable(index, size, ob, direct)
         );
