@@ -32,6 +32,7 @@
     >
       <template #label>
         <div v-if="item.canceled === 1"><van-tag color="#bfbfbf">已取消</van-tag></div>
+        <div>预约时段：{{item.timeRange}}</div>
       </template>
     </van-cell>
 

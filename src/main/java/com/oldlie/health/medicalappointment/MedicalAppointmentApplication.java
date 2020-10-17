@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author oldlie
+ */
 @SpringBootApplication
 @EnableTransactionManagement
 @ImportResource(locations = {"classpath:kaptcha.xml"})
