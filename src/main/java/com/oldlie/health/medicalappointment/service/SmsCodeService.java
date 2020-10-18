@@ -8,9 +8,11 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.google.gson.Gson;
 import com.oldlie.health.medicalappointment.model.Csp;
 import com.oldlie.health.medicalappointment.model.db.SmsCode;
 import com.oldlie.health.medicalappointment.model.db.repository.SmsCodeRepository;
+import com.oldlie.health.medicalappointment.model.response.AliSmsResponse;
 import com.oldlie.health.medicalappointment.model.response.BaseResponse;
 import com.oldlie.health.medicalappointment.model.response.ItemResponse;
 import com.oldlie.health.medicalappointment.service.init.config.AkiConifg;
@@ -21,6 +23,7 @@ import com.oldlie.health.medicalappointment.util.Tools;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
@@ -82,13 +85,22 @@ public class SmsCodeService {
         request.putQueryParameter("PhoneNumbers", phone);
         request.putQueryParameter("SignName", signName);
         request.putQueryParameter("TemplateCode", templateCode);
-        request.putQueryParameter("TemplateParam", code);
+        request.putQueryParameter("TemplateParam", "{\"code\":" + code + "}");
 
-        /*
-        TODO: 短信接口申请完成之后再改
         try {
-            // CommonResponse commonResponse = client.getCommonResponse(request);
-            // System.out.println(commonResponse.getData());
+            CommonResponse commonResponse = client.getCommonResponse(request);
+            if (commonResponse.getHttpStatus() != HttpStatus.OK.value()) {
+                response.setFailed("Ali sms status:" + commonResponse.getHttpStatus());
+                return response;
+            }
+            Gson gson = new Gson();
+            AliSmsResponse aliSmsResponse = gson.fromJson(commonResponse.getData(), AliSmsResponse.class);
+            if (!HttpStatus.OK.name().equals(aliSmsResponse.getCode())) {
+                response.setFailed("Alis sms failed:" + aliSmsResponse.getCode());
+                return response;
+            }
+            System.out.println(commonResponse.getData());
+
         } catch (ServerException e) {
             e.printStackTrace();
             log.error(e.getMessage());
@@ -100,12 +112,11 @@ public class SmsCodeService {
             response.setFailed("短信未能发送");
             return response;
         }
-        */
         SmsCode target = new SmsCode();
         target.setPhone(phone);
         target.setCode(code);
         target = this.smsCodeRepository.save(target);
-        response.setItem(code);
+        // response.setItem(code);
         return response;
     }
 
