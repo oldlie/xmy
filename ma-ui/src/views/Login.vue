@@ -174,7 +174,8 @@ export default {
         .post(url, fd)
         .cb((data) => {
           if (data["status"] === 0) {
-            this.$notify({ type: "success", message: `您的登录码是：${data.item}` });
+            // this.$notify({ type: "success", message: `您的登录码是：${data.item}` });
+            this.$notify({ type: "success", message: `短信已发送` });
             this.show = false;
           } else {
             this.$notify({
