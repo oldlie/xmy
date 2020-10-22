@@ -55,6 +55,7 @@ public class SmsCodeService {
     public ItemResponse<String> save(String phone, String code) {
         ItemResponse<String> response = new ItemResponse<>();
         Page<SmsCode> page = this.smsCodeRepository.findAll(
+                (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get(SmsCode.PHONE), phone),
                 Tools.pageable(1, 1, "createDate", "desc")
         );
         if (page.getTotalElements() > 0) {
@@ -87,6 +88,7 @@ public class SmsCodeService {
         request.putQueryParameter("TemplateCode", templateCode);
         request.putQueryParameter("TemplateParam", "{\"code\":" + code + "}");
 
+        /*
         try {
             CommonResponse commonResponse = client.getCommonResponse(request);
             if (commonResponse.getHttpStatus() != HttpStatus.OK.value()) {
@@ -112,11 +114,13 @@ public class SmsCodeService {
             response.setFailed("短信未能发送");
             return response;
         }
+        */
+
         SmsCode target = new SmsCode();
         target.setPhone(phone);
         target.setCode(code);
         target = this.smsCodeRepository.save(target);
-        // response.setItem(code);
+        response.setItem(code);
         return response;
     }
 

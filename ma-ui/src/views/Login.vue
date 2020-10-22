@@ -20,7 +20,7 @@
             v-model="sms"
             center
             clearable
-            label="获取登录码"
+            label="登录码"
             placeholder="请输入登录码"
           >
             <template #button>
@@ -174,14 +174,16 @@ export default {
         .post(url, fd)
         .cb((data) => {
           if (data["status"] === 0) {
-            // this.$notify({ type: "success", message: `您的登录码是：${data.item}` });
-            this.$notify({ type: "success", message: `短信已发送` });
+            this.$notify({ type: "success", message: `您的登录码是：${data.item}` });
+            this.sms = data.item;
+            // this.$notify({ type: "success", message: `短信已发送` });
             this.show = false;
           } else {
             this.$notify({
               type: "danger",
               message: decodeURI(data["message"]),
             });
+            this.$cookie.remove('');
           }
         })
         .req();
