@@ -4,6 +4,8 @@ import com.oldlie.health.medicalappointment.model.Csp;
 import com.oldlie.health.medicalappointment.service.init.InitConfigService;
 import com.oldlie.health.medicalappointment.service.init.InitPermissionService;
 import com.oldlie.health.medicalappointment.service.init.InitUserService;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +32,7 @@ import java.util.List;
 @SpringBootApplication
 @EnableTransactionManagement
 @ImportResource(locations = {"classpath:kaptcha.xml"})
+@Log4j2
 public class MedicalAppointmentApplication implements ApplicationListener<ContextRefreshedEvent> {
 
 	private boolean isInit = false;
@@ -48,6 +51,7 @@ public class MedicalAppointmentApplication implements ApplicationListener<Contex
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+		log.info("hello world");
 		if (!this.isInit && initDatabase.toLowerCase().equals(Csp.TRUE_)) {
 			this.init();
 			this.isInit = true;
