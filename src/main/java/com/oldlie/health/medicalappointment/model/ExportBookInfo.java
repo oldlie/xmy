@@ -2,6 +2,7 @@ package com.oldlie.health.medicalappointment.model;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.oldlie.health.medicalappointment.model.db.BookInfo;
 import lombok.Data;
 
 /**
@@ -23,6 +24,9 @@ public class ExportBookInfo {
     @ExcelProperty("日期")
     private String date;
 
+    @ExcelProperty("星期")
+    private String week;
+
     @ExcelProperty("时段")
     private String timeRange;
 
@@ -32,4 +36,16 @@ public class ExportBookInfo {
     @ExcelProperty("取消原因")
     private String canceledReason;
 
+    public static ExportBookInfo getInstance(BookInfo bookInfo) {
+        ExportBookInfo info = new ExportBookInfo();
+        info.setNickname(bookInfo.getNickname());
+        info.setPhone(bookInfo.getPhone());
+        info.setDoctor(bookInfo.getDoctor());
+        info.setDate(bookInfo.getBookDate());
+        info.setWeek(bookInfo.getBookWeek());
+        info.setTimeRange(bookInfo.getTimeRange());
+        info.setCanceled(bookInfo.getCanceled() == 1 ? "已取消" : "");
+        info.setCanceledReason(bookInfo.getCanceledReason());
+        return info;
+    }
 }

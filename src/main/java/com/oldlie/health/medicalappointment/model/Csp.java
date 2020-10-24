@@ -9,6 +9,7 @@ public class Csp {
     public static final String SUCCESS = "SUCCESS";
     public static final String USERNAME_ = "username";
     public static final String ANNONYMOUS_ = "annonymous";
+    public static final int CAPACITY_8 = 8;
     public static final int CAPACITY_128 = 128;
     public static final String SLASH = "/";
     public static final String DOT = ".";

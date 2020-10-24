@@ -19,6 +19,7 @@ import java.util.Optional;
  * @author oldlie
  * @date 2020/9/26
  */
+@Deprecated
 public class ServiceUtil<T extends BaseId, R extends JpaRepository<T, Long>> {
 
     R repository;

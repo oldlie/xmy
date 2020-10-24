@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @author oldlie
  * @date 2020/10/6
  */
-public interface BookInfoRepository extends JpaRepository<BookInfo, Long>, JpaSpecificationExecutor<BookInfo> {
+public interface BookInfoRepository extends BaseRepository<BookInfo, Long> {
 }

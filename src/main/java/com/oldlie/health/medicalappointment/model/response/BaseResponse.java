@@ -7,6 +7,9 @@ import lombok.Data;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+/**
+ * @author oldlie
+ */
 @Data
 public class BaseResponse implements FailedResponse<BaseResponse> {
     private int status = StatusCode.SUCCESS;
