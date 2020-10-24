@@ -5,7 +5,6 @@ import com.oldlie.health.medicalappointment.service.init.InitConfigService;
 import com.oldlie.health.medicalappointment.service.init.InitPermissionService;
 import com.oldlie.health.medicalappointment.service.init.InitUserService;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;

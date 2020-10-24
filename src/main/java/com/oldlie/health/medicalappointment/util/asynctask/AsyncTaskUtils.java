@@ -31,7 +31,7 @@ public class AsyncTaskUtils {
         return task;
     }
 
-    @Async
+    @Async("taskExecutor")
     public synchronized AsyncTask start(AsyncTask task) {
         int maxTasks = 2;
         int expired = 1;
