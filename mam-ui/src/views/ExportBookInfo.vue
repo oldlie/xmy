@@ -48,7 +48,7 @@
       >
 
       <p v-if="taskFinished">
-        <a :href="downloadUrl" download="预约表.xlsx">下载导出文件夹</a>
+        <a :href="downloadUrl" download="预约表.xlsx">下载导出文件</a>
       </p>
     </div>
     <van-calendar
