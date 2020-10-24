@@ -1,6 +1,11 @@
 <template>
   <div>
-    <van-nav-bar title="预约信息" left-text="返回" @click-left="onClickLeft" />
+    <van-nav-bar title="预约信息" left-text="返回" @click-left="onClickLeft">
+      <template #right>
+        导出
+        <van-icon name="down" size="18" @click="exportInfo" />
+      </template>
+    </van-nav-bar>
 
     <div
       style="
@@ -31,8 +36,10 @@
       style="text-align: left"
     >
       <template #label>
-        <div v-if="item.canceled === 1"><van-tag color="#bfbfbf">已取消</van-tag></div>
-        <div>预约时段：{{item.timeRange}}</div>
+        <div v-if="item.canceled === 1">
+          <van-tag color="#bfbfbf">已取消</van-tag>
+        </div>
+        <div>预约时段：{{ item.timeRange }}</div>
       </template>
     </van-cell>
 
@@ -182,9 +189,9 @@ export default {
       this.showPicker2 = true;
     },
     onPicker2Confirm(value) {
-      if (value === '有效') {
+      if (value === "有效") {
         this.canceled = 0;
-      } else if (value === '已取消') {
+      } else if (value === "已取消") {
         this.canceled = 1;
       } else {
         this.canceled = -1;
@@ -193,6 +200,9 @@ export default {
       this.loadData();
       this.showPicker2 = false;
     },
+    exportInfo() {
+      this.$router.push('/export/book-info');
+    }
   },
 };
 </script>

@@ -67,6 +67,7 @@ public class MedicalAppointmentApplication implements ApplicationListener<Contex
 		origins.add("http://localhost:8080");
 		origins.add("http://localhost:8081");
 		origins.add("http://oldlie.com");
+		origins.add("http://localhost:8082");
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);

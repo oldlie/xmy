@@ -8,6 +8,8 @@ import com.oldlie.health.medicalappointment.model.ExportBookInfo;
 import com.oldlie.health.medicalappointment.model.db.BookInfo;
 import com.oldlie.health.medicalappointment.model.db.repository.BookInfoRepository;
 import com.oldlie.health.medicalappointment.model.response.ItemResponse;
+import com.oldlie.health.medicalappointment.service.init.config.UploadDir;
+import com.oldlie.health.medicalappointment.service.init.config.UploadUrl;
 import com.oldlie.health.medicalappointment.util.RepositoryUtils;
 import com.oldlie.health.medicalappointment.util.Tools;
 import com.oldlie.health.medicalappointment.util.asynctask.AsyncTask;
@@ -40,6 +42,9 @@ public class FileService {
 
     @Autowired
     private BookInfoRepository bookInfoRepository;
+
+    @Autowired
+    private ConfigService configService;
 
     private long maxExportLimit = 1000;
 
@@ -131,15 +136,21 @@ public class FileService {
         String name = "预约表_" + getVc() + ".xlsx";
         int year = localDateTime.getYear();
         int month = localDateTime.getMonthValue();
+        String root = this.configService.getValue(UploadDir.CONF_KEY);
         String fileName = dirPath(name, username, year, month);
+        String fullName = root + File.separator + fileName;
         List<BookInfo> list = utils.list(query, Tools.sort(BookInfo.YMD, Tools.ASC));
+        List<ExportBookInfo> exportBookInfoList = new LinkedList<>();
+        list.forEach(x -> {
+            exportBookInfoList.add(ExportBookInfo.getInstance(x));
+        });
 
         AsyncTask task = this.asyncTaskUtils.buildTask("导出预约列表", "", () -> {
             ExcelWriter excelWriter = null;
             try {
-                excelWriter = EasyExcel.write(fileName, ExportBookInfo.class).build();
+                excelWriter = EasyExcel.write(fullName, ExportBookInfo.class).build();
                 WriteSheet writeSheet = EasyExcel.writerSheet("预约记录").build();
-                excelWriter.write(list, writeSheet);
+                excelWriter.write(exportBookInfoList, writeSheet);
             } catch (Exception e) {
                 log.error(e.getMessage());
             } finally {
@@ -150,9 +161,11 @@ public class FileService {
             }
         });
         this.asyncTaskUtils.start(task);
+        String webRoot = this.configService.getValue(UploadUrl.CONF_KEY);
         Map<String, Object> map = new HashMap<>(Csp.CAPACITY_8);
         map.put("task", task);
-        map.put("url", url(fileName, username, year, month));
+        map.put("url", webRoot + "/" + url(name, username, year, month));
+        response.setItem(map);
         return response;
     }
 

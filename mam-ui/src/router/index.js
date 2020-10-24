@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Appointment from '../views/Appointment.vue'
 import AppointmentForm from '../views/AppointmentForm.vue'
 import BookInfoList from '../views/BookInfoList.vue'
+import ExportBookInfo from '../views/ExportBookInfo.vue'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Doctor from '../views/Doctor.vue'
@@ -50,6 +51,11 @@ const routes = [
     path: '/doctor-form/:id',
     name: 'DoctorForm',
     component: DoctorForm
+  },
+  {
+    path: '/export/book-info',
+    name: 'ExportBookInfo',
+    component: ExportBookInfo
   },
   {
     path: '/modify-pass',

@@ -69,6 +69,9 @@ public class AsyncTaskUtils {
 
     public AsyncTask info(long id) {
         AsyncTask task = this.taskMap.get(id);
+        if (task == null) {
+            return null;
+        }
         if (this.isFinished(task)) {
             // 如果不是初始化或者正在执行中，则表示当前任务已经完成了
             this.taskMap.remove(task.getId());

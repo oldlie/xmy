@@ -1,5 +1,6 @@
 package com.oldlie.health.medicalappointment.util.asynctask;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,14 +20,17 @@ public class AsyncTask {
     private int stepIndex;
     private int stepTotal;
     private String executeMessage;
+    @JsonIgnore
     private AsyncTaskExecutor executor;
 
+    @JsonIgnore
     public AsyncTask updateStatus(AsyncTaskStatus status) {
         this.status = status.getStatus();
         this.executeMessage = status.getTitle();
         return this;
     }
 
+    @JsonIgnore
     public AsyncTask finish(AsyncTaskStatus status) {
         this.status = status.getStatus();
         this.executeMessage = status.getTitle();

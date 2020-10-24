@@ -30,7 +30,7 @@ public class ExportBookInfo {
     @ExcelProperty("时段")
     private String timeRange;
 
-    @ExcelProperty("已取消")
+    @ExcelProperty("是否取消")
     private String canceled;
 
     @ExcelProperty("取消原因")
@@ -44,7 +44,7 @@ public class ExportBookInfo {
         info.setDate(bookInfo.getBookDate());
         info.setWeek(bookInfo.getBookWeek());
         info.setTimeRange(bookInfo.getTimeRange());
-        info.setCanceled(bookInfo.getCanceled() == 1 ? "已取消" : "");
+        info.setCanceled(bookInfo.getCanceled() == 1 ? "是" : "");
         info.setCanceledReason(bookInfo.getCanceledReason());
         return info;
     }
