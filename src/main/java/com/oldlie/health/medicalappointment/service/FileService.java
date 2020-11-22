@@ -49,14 +49,13 @@ public class FileService {
     private long maxExportLimit = 1000;
 
 
-    public String dirPath(String fileName, String username, int year, int month) {
+    public String dirPath(String username, int year, int month) {
         StringBuilder builder = new StringBuilder(Csp.CAPACITY_128);
         String pathPrefix = DigestUtils.md5Hex(username).substring(0, 2);
         builder.append(pathPrefix).append(File.separator)
                 .append(username).append(File.separator)
                 .append(year).append(File.separator)
-                .append(month).append(File.separator)
-                .append(fileName);
+                .append(month);
         return builder.toString();
     }
 
@@ -137,8 +136,15 @@ public class FileService {
         int year = localDateTime.getYear();
         int month = localDateTime.getMonthValue();
         String root = this.configService.getValue(UploadDir.CONF_KEY);
-        String fileName = dirPath(name, username, year, month);
-        String fullName = root + File.separator + fileName;
+        String fileName = dirPath(username, year, month);
+        fileName = root + File.separator + fileName;
+        File dir = new File(fileName);
+        if (!dir.exists()) {
+            if (!dir.mkdirs()) {
+                return response.setFailed("创建文件夹失败");
+            }
+        }
+        String fullName = fileName + File.separator + name;
         List<BookInfo> list = utils.list(query, Tools.sort(BookInfo.YMD, Tools.ASC));
         List<ExportBookInfo> exportBookInfoList = new LinkedList<>();
         list.forEach(x -> {

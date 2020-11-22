@@ -33,7 +33,7 @@
 
         <!-- 存储所有error信息 -->
         <RollingRandomAccessFile name="errorLog" fileName="${logDir}/${App}-error.log" immediateFlush="false"
-                                 filePattern="${logDir}}/$${date:yyyy-MM}/${App}-error-%d{MM-dd-yyyy}-%i.log.gz"
+                                 filePattern="${logDir}/$${date:yyyy-MM}/${App}-error-%d{MM-dd-yyyy}-%i.log.gz"
                                  append="false">
             <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} [%t] %-5level %logger{36} %L %M - %msg%xEx%n"/>
             <Policies>

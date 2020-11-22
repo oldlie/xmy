@@ -70,7 +70,7 @@ public class ImageController {
 
             String saveFileName = this.fileService.rename(originFileName);
 
-            String path = this.fileService.dirPath(saveFileName, username, year, month);
+            String path = this.fileService.dirPath(username, year, month) + File.separator + saveFileName;
             File saveFile = new File(this.configService.getValue(UploadDir.CONF_KEY) + File.separator + path);
             if (!saveFile.getParentFile().exists()) {
                 if (!saveFile.getParentFile().mkdirs()) {
