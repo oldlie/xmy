@@ -81,7 +81,12 @@ public class BookInfoService {
 
         long ymd = appointment.getYmd();
         optional = this.bookInfoRepository.findOne(
-                (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get(BookInfo.YMD), ymd)
+                (root, criteriaQuery, criteriaBuilder) -> {
+                    Predicate predicate = criteriaBuilder.equal(root.get(BookInfo.YMD), ymd);
+                    Predicate predicate1 = criteriaBuilder.equal(root.get(BookInfo.UID), uid);
+                    Predicate predicate2 = criteriaBuilder.equal(root.get(BookInfo.CANCELED), Csp.FALSE_INT);
+                    return criteriaBuilder.and(predicate, predicate1, predicate2);
+                }
         );
         if (optional.isPresent()) {
             response.setFailed("您今天已经有预约了，请前往预约记录查看");
