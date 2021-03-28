@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 /**
@@ -93,7 +95,8 @@ public class AppointmentService {
         Page<Appointment> page = this.appointmentRepository.findAll(
                 (root, query, criteriaBuilder) ->  {
                     Predicate predicate = criteriaBuilder.equal(root.get(Appointment.DOCTOR_ID), doctorId);
-                    Predicate predicate1 = criteriaBuilder.ge(root.get(Appointment.YMD), Tools.getYmd());
+                    Predicate predicate1 = criteriaBuilder.ge(root.get(Appointment.YMD),
+                            Tools.getYmd(LocalDateTime.now(ZoneOffset.of("+8"))));
                     Predicate predicate2 = criteriaBuilder.equal(root.get(Appointment.PUBLISHED), Csp.TRUE_INT);
                     return criteriaBuilder.and(predicate, predicate1, predicate2);
                 },
